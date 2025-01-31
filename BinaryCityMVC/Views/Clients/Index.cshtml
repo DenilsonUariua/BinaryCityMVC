@@ -12,6 +12,7 @@
             <th>Name</th>
             <th>Client Code</th>
             <th class="text-center">No. of Linked Contacts</th>
+            <th class="text-center">Actions</th> <!-- New column for actions -->
         </tr>
     </thead>
     <tbody>
@@ -23,13 +24,21 @@
                     <td>@client.Name</td>
                     <td>@client.ClientCode</td>
                     <td class="text-center">@client.ClientContacts.Count</td>
+                    <td class="text-center">
+                        <a class="btn btn-primary btn-sm"
+                           asp-controller="Clients"
+                           asp-action="LinkContact"
+                           asp-route-id="@client.Id">
+                            Link Contact
+                        </a>
+                    </td>
                 </tr>
             }
         }
         else
         {
             <tr>
-                <td colspan="3">No client(s) found.</td>
+                <td colspan="4" class="text-center">No client(s) found.</td>
             </tr>
         }
     </tbody>

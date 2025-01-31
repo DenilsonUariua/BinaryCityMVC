@@ -1,4 +1,4 @@
-﻿@model BinaryCityMVC.Models.Contact
+﻿@model BinaryCityMVC.Models.ContactViewModel
 
 @{
     ViewData["Title"] = "Create Contact";
@@ -7,39 +7,89 @@
 <div class="container mt-4">
     <h2 class="mb-4">Create Contact</h2>
 
-    <div class="card shadow-sm p-4">
-        <form asp-action="Create" method="post" class="row g-3">
-            @Html.AntiForgeryToken()
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="clients-tab" data-bs-toggle="tab" href="#clients" role="tab" aria-controls="clients" aria-selected="false">Client(s)</a>
+        </li>
+    </ul>
 
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input asp-for="Name" class="form-control" placeholder="Enter Name" />
-                    <label asp-for="Name"></label>
-                </div>
-                <span asp-validation-for="Name" class="text-danger small"></span>
-            </div>
+    <!-- Tabs Content -->
+    <div class="tab-content" id="myTabContent">
+        <!-- General Tab -->
+        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+            <div class="card shadow-sm p-4 mt-3">
+                <form asp-action="Create" method="post" class="row g-3">
+                    @Html.AntiForgeryToken()
 
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input asp-for="Surname" class="form-control" placeholder="Enter Surname" />
-                    <label asp-for="Surname"></label>
-                </div>
-                <span asp-validation-for="Surname" class="text-danger small"></span>
-            </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Contact.Name" class="form-control" placeholder="Enter Name" />
+                            <label asp-for="Contact.Name"></label>
+                        </div>
+                        <span asp-validation-for="Contact.Name" class="text-danger small"></span>
+                    </div>
 
-            <div class="col-md-12">
-                <div class="form-floating">
-                    <input asp-for="Email" class="form-control" placeholder="Enter Email" />
-                    <label asp-for="Email"></label>
-                </div>
-                <span asp-validation-for="Email" class="text-danger small"></span>
-            </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Contact.Surname" class="form-control" placeholder="Enter Surname" />
+                            <label asp-for="Contact.Surname"></label>
+                        </div>
+                        <span asp-validation-for="Contact.Surname" class="text-danger small"></span>
+                    </div>
 
-            <div class="col-12 d-flex justify-content-between mt-3">
-                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-                <button type="submit" class="btn btn-primary">Create Contact</button>
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <input asp-for="Contact.Email" class="form-control" placeholder="Enter Email" />
+                            <label asp-for="Contact.Email"></label>
+                        </div>
+                        <span asp-validation-for="Contact.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Create Contact</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
+
+        <!-- Link Clients Tab -->
+        <div class="tab-pane fade" id="clients" role="tabpanel" aria-labelledby="clients-tab">
+            <div class="card shadow-sm p-4 mt-3">
+                <!-- Table for linking clients -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Client Code</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var client in Model.Clients)  
+                        {
+                            <tr>
+                                <td>@client.Name</td>
+                                <td>@client.ClientCode</td>
+                                <td>
+                                    <button class="btn btn-link">Link</button>
+                                    <button class="btn btn-link">Unlink</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tab Actions -->
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
     </div>
 </div>
 
@@ -48,3 +98,9 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    // Activate the first tab
+    var myTab = new bootstrap.Tab(document.getElementById('general-tab'));
+    myTab.show();
+</script>

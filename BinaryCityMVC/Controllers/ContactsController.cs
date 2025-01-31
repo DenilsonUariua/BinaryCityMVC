@@ -17,8 +17,8 @@ namespace BinaryCityMVC.Controllers
         {
             var contacts = _context.Contacts
                 .Include(c => c.ClientContacts)
-                .AsEnumerable() // Move to client-side evaluation
-                .OrderBy(c => c.FullName) // Now ordering in-memory
+                .AsEnumerable()
+                .OrderBy(c => c.FullName)
                 .ToList();
 
             return View(contacts);
@@ -27,7 +27,12 @@ namespace BinaryCityMVC.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var clients = _context.Clients.ToList();  // Get all clients from the database
+            var model = new ContactViewModel
+            {
+                Clients = clients  // Assuming you have a ContactViewModel with Clients property
+            };
+            return View(model);
         }
 
         [HttpPost]

@@ -1,33 +1,95 @@
-﻿@model BinaryCityMVC.Models.Client
+﻿@model BinaryCityMVC.Models.ClientViewModel
 
 @{
-    ViewData["Title"] = "Create Client";
+	ViewData["Title"] = "Create Client";
 }
 
 <div class="container mt-4">
-    <h2>Create Client</h2>
-    <form asp-action="Create">
-        @Html.AntiForgeryToken()
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+	<h2>Create Client</h2>
 
-        <div class="mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <textarea asp-for="Description" class="form-control"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
 
-        <button type="submit" class="btn btn-primary">Create</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </form>
+	<!-- Tabs Navigation -->
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="contacts-tab" data-bs-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">Contact(s)</a>
+		</li>
+	</ul>
+
+	<!-- Tabs Content -->
+	<div class="tab-content" id="myTabContent">
+		<!-- General Tab -->
+		<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+			<div class="card shadow-sm p-4 mt-3">
+				<form asp-action="Create">
+					@Html.AntiForgeryToken()
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+					<div class="mb-3">
+						<label asp-for="Client.Name" class="form-label"></label>
+						<input asp-for="Client.Name" class="form-control" />
+						<span asp-validation-for="Client.Name" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Client.Description" class="form-label"></label>
+						<textarea asp-for="Client.Description" class="form-control"></textarea>
+						<span asp-validation-for="Client.Description" class="text-danger"></span>
+					</div>
+
+					<button type="submit" class="btn btn-primary">Create</button>
+				</form>
+			</div>
+		</div>
+		<!-- Link Clients Tab -->
+		<div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+			<div class="card shadow-sm p-4 mt-3">
+				<!-- Table for linking clients -->
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Contact Full Name</th>
+							<th scope="col">Contact Email Address</th>
+							<th scope="col">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var contacts in Model.Contacts)
+						{
+							<tr>
+								<td>@contacts.FullName</td>
+								<td>@contacts.Email</td>
+								<td>
+									<button class="btn btn-link">Link</button>
+									<button class="btn btn-link">Unlink</button>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Tab Actions -->
+	<div class="d-flex justify-content-end mt-3">
+		<a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+	</div>
 </div>
 
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
+
+<script>
+	// Activate the first tab
+	var myTab = new bootstrap.Tab(document.getElementById('general-tab'));
+	myTab.show();
+</script>

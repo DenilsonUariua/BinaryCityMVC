@@ -30,7 +30,12 @@ namespace BinaryCityMVC.Controllers
         // GET: Clients/Create
         public IActionResult Create()
         {
-            return View();
+            var contacts = _context.Contacts.ToList();  // Get all contacts from the database
+            var model = new ClientViewModel
+            {
+                Contacts = contacts  // Assuming you have a ContactViewModel with Clients property
+            };
+            return View(model);
         }
 
         // POST: Clients/Create
@@ -69,6 +74,7 @@ namespace BinaryCityMVC.Controllers
 
 
         // GET: Clients/LinkContact/{id}
+        [HttpGet("Clients/LinkContact/{id}")]
         public IActionResult LinkContact(int id)
         {
             var client = _context.Clients
@@ -81,13 +87,20 @@ namespace BinaryCityMVC.Controllers
                 return NotFound();
             }
 
+            // Get all contacts that are not linked to the client
             var availableContacts = _context.Contacts
-                .Where(c => !client.ClientContacts.Any(cc => cc.ContactId == c.Id))
+                .Where(c => !client.ClientContacts.Select(cc => cc.ContactId).Contains(c.Id)) // Check for unlinked contacts
                 .ToList();
 
-            ViewBag.AvailableContacts = availableContacts;
-            return View(client);
+            var viewModel = new LinkContactViewModel
+            {
+                Client = client,
+                AvailableContacts = availableContacts
+            };
+
+            return View(viewModel);
         }
+
 
         // POST: Clients/LinkContact/{id}
         [HttpPost]

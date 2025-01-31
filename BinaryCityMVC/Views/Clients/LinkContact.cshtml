@@ -1,83 +1,42 @@
-﻿@model BinaryCityMVC.Models.Contact
+﻿@model BinaryCityMVC.Models.LinkContactViewModel
 
 @{
-    ViewData["Title"] = "Link Client";
+    ViewData["Title"] = "Link Contact";
 }
 
-<h2>Link Client to @Model.FullName</h2>
+<h2>Link Contact to @Model.Client.Name</h2>
 
-<div>
-    <h4>Linked Clients</h4>
-    @if (Model.ClientContacts.Any())
-    {
-        <table class="table">
-            <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th class="text-center">Actions</th> <!-- New column -->
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.AvailableContacts.Any())
+        {
+            foreach (var contact in Model.AvailableContacts)
+            {
                 <tr>
-                    <th>Client Name</th>
-                    <th>Client Code</th>
-                    <th>Action</th>
+                    <td>@contact.Name</td>
+                    <td>@contact.Surname</td>
+                    <td>@contact.Email</td>
+                    <td class="text-center">
+                        <form method="post" action="@Url.Action("LinkContact", "Clients", new { id = Model.Client.Id, contactId = contact.Id })">
+                            <button type="submit" class="btn btn-primary btn-sm">Link Client</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var client in Model.ClientContacts.Select(cc => cc.Client))
-                {
-                    <tr>
-                        <td>@client.Name</td>
-                        <td>@client.ClientCode</td>
-                        <td>
-                            <form asp-action="UnlinkClient" method="post">
-                                <input type="hidden" name="id" value="@Model.Id" />
-                                <input type="hidden" name="clientId" value="@client.Id" />
-                                <button type="submit" class="btn btn-danger">Unlink</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No clients found.</p>
-    }
-</div>
-
-<div>
-    <h4>Available Clients</h4>
-    @if (ViewBag.AvailableClients != null && ((List<Client>)ViewBag.AvailableClients).Any())
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Client Name</th>
-                    <th>Client Code</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var client in (List<Client>)ViewBag.AvailableClients)
-                {
-                    <tr>
-                        <td>@client.Name</td>
-                        <td>@client.ClientCode</td>
-                        <td>
-                            <form asp-action="LinkClient" method="post">
-                                <input type="hidden" name="id" value="@Model.Id" />
-                                <input type="hidden" name="clientId" value="@client.Id" />
-                                <button type="submit" class="btn btn-primary">Link</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No available clients found.</p>
-    }
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No available contacts to link.</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -9,6 +9,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Full Name</th>
             <th>Name</th>
             <th>Surname</th>
             <th>Email</th>
@@ -22,6 +23,7 @@
             foreach (var contact in Model)
             {
                 <tr>
+                    <td>@contact.FullName</td>
                     <td>@contact.Name</td>
                     <td>@contact.Surname</td>
                     <td>@contact.Email</td>
