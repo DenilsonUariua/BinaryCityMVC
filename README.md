@@ -49,5 +49,6 @@ This is an ASP.NET Core MVC application for managing **Clients** and **Contacts*
 ![Screenshot_18](https://github.com/user-attachments/assets/1b4f12fe-45e2-4c34-b0b2-4e72d4f13caa)
 ### Contacts Create Page (Client(s) Tab)
 ![Screenshot_19](https://github.com/user-attachments/assets/88208767-a183-4421-978f-e3e9eda08358)
-
+### Clients DB Table in SSMS 
+![Screenshot_20](https://github.com/user-attachments/assets/6352be49-1551-43df-aa75-c98308e75a7e)
 
