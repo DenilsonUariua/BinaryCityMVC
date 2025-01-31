@@ -1,0 +1,50 @@
+﻿@model BinaryCityMVC.Models.Contact
+
+@{
+    ViewData["Title"] = "Create Contact";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Create Contact</h2>
+
+    <div class="card shadow-sm p-4">
+        <form asp-action="Create" method="post" class="row g-3">
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input asp-for="Name" class="form-control" placeholder="Enter Name" />
+                    <label asp-for="Name"></label>
+                </div>
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <input asp-for="Surname" class="form-control" placeholder="Enter Surname" />
+                    <label asp-for="Surname"></label>
+                </div>
+                <span asp-validation-for="Surname" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-floating">
+                    <input asp-for="Email" class="form-control" placeholder="Enter Email" />
+                    <label asp-for="Email"></label>
+                </div>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12 d-flex justify-content-between mt-3">
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                <button type="submit" class="btn btn-primary">Create Contact</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

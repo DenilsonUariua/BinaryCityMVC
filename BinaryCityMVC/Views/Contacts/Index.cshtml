@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BinaryCityMVC.Models.Contact>
+
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<h2>Contacts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Email</th>
+            <th class="text-center">No. of Linked Clients</th>
+            <th class="text-center">Actions</th> <!-- New column -->
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.Name</td>
+                    <td>@contact.Surname</td>
+                    <td>@contact.Email</td>
+                    <td class="text-center">@contact.ClientContacts.Count</td>
+                    <td class="text-center">
+                        <a class="btn btn-primary btn-sm"
+                           asp-controller="Contacts"
+                           asp-action="LinkClient"
+                           asp-route-id="@contact.Id">
+                            Link Client
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No contact(s) found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
